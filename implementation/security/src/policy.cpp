@@ -40,11 +40,11 @@ policy::deserialize_uid_gid(const byte_t * &_data, uint32_t &_size,
 
     bool its_result;
 
-    its_result = deserialize_u32(_data, _size, _uid);
+    its_result = deserialize_u32(_data, _size, reinterpret_cast<uint32_t&>(_uid));
     if (its_result == false)
         return false;
 
-    its_result = deserialize_u32(_data, _size, _gid);
+    its_result = deserialize_u32(_data, _size, reinterpret_cast<uint32_t&>(_gid));
     if (its_result == false)
         return false;
 
