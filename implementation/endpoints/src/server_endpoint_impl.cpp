@@ -749,7 +749,6 @@ void server_endpoint_impl<Protocol>::send_cbk(const endpoint_type _key,
         VSOMEIP_WARNING << "sei::send_cbk received error: " << _error.message()
                 << " (" << std::dec << _error.value() << ") "
                 << get_remote_information(it) << " "
-                << std::dec << its_data.queue_.size() << " "
                 << its_data.queue_size_ << " ("
                 << std::hex << std::setfill('0')
                 << std::setw(4) << its_client << "): ["
