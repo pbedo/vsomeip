@@ -715,10 +715,11 @@ void server_endpoint_impl<Protocol>::send_cbk(const endpoint_type _key,
             parse_message_ids(its_buffer, its_service, its_method, its_client, its_session);
             VSOMEIP_WARNING << __func__ << ": prevented queue_size underflow. queue_size: "
                 << its_data.queue_size_ << " payload_size: " << payload_size << " payload: ("
-                << std::hex << std::setw(4) << std::setfill('0') << its_client <<"): ["
-                << std::hex << std::setw(4) << std::setfill('0') << its_service << "."
-                << std::hex << std::setw(4) << std::setfill('0') << its_method << "."
-                << std::hex << std::setw(4) << std::setfill('0') << its_session << "]";
+                << std::hex << std::setfill('0')
+                << std::setw(4) << its_client <<"): ["
+                << std::setw(4) << its_service << "."
+                << std::setw(4) << its_method << "."
+                << std::setw(4) << its_session << "]";
             its_data.queue_.pop_front();
             recalculate_queue_size(its_data);
         }
@@ -748,7 +749,7 @@ void server_endpoint_impl<Protocol>::send_cbk(const endpoint_type _key,
         VSOMEIP_WARNING << "sei::send_cbk received error: " << _error.message()
                 << " (" << std::dec << _error.value() << ") "
                 << get_remote_information(it) << " "
-                << std::dec << its_data.queue_.size() << " "
+                << its_data.queue_.size() << " "
                 << its_data.queue_size_ << " ("
                 << std::hex << std::setfill('0')
                 << std::setw(4) << its_client << "): ["
