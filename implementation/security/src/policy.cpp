@@ -68,6 +68,7 @@ policy::deserialize(const byte_t * &_data, uint32_t &_size) {
     const auto its_uid_interval
         = boost::icl::interval<uid_t>::closed(its_uid, its_uid);
     boost::icl::interval_set<gid_t> its_gid_set;
+    its_gid_set.clear();
     its_gid_set.insert(its_gid);
     credentials_ += std::make_pair(its_uid_interval, its_gid_set);
 

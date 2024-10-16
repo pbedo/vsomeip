@@ -503,7 +503,8 @@ void routing_manager_base::register_event(client_t _client,
                 // Create a new callback for this client if filter interval is used
                 register_debounce(its_debounce, _client, its_event);
             } else {
-                if (!_is_shadow && is_routing_manager()) {
+                if ((_type != vsomeip_v3::event_type_e::ET_EVENT) && !_is_shadow && is_routing_manager()) {
+                    VSOMEIP_TRACE << "routing_manager_base::register_event::_epsilon_change_func: "<< __LINE__;
                     _epsilon_change_func = [](const std::shared_ptr<payload> &_old,
                                         const std::shared_ptr<payload> &_new) {
                         bool is_change = (_old->get_length() != _new->get_length());
@@ -979,14 +980,15 @@ void routing_manager_base::notify_one_current_value(
         const std::set<event_t> &_events_to_exclude) {
     if (_event != ANY_EVENT) {
         std::shared_ptr<event> its_event = find_event(_service, _instance, _event);
-        if (its_event && its_event->is_field())
+        if (its_event && (its_event->is_field()
+                || (its_event->get_type() == event_type_e::ET_EVENT)))
             its_event->notify_one(_client, false);
     } else {
         auto its_eventgroup = find_eventgroup(_service, _instance, _eventgroup);
         if (its_eventgroup) {
             std::set<std::shared_ptr<event> > its_events = its_eventgroup->get_events();
             for (const auto &e : its_events) {
-                if (e->is_field()
+                if ((e->is_field() || (e->get_type() == event_type_e::ET_EVENT))
                         && _events_to_exclude.find(e->get_event())
                                 == _events_to_exclude.end()) {
                     e->notify_one(_client, false);

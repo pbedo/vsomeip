@@ -33,7 +33,8 @@ protector::protect(e2e_buffer &_buffer, instance_t _instance) {
         write_16(_buffer, get_counter(_instance), 2);
 
         /** @req [SWS_E2E_00366] */
-        uint32_t its_data_id(uint32_t(_instance) << 24 | config_.data_id_);
+        // uint32_t its_data_id(uint32_t(_instance) << 24 | config_.data_id_);
+        uint32_t its_data_id(config_.data_id_);
         write_32(_buffer, its_data_id, 4);
 
         /** @req [SWS_E2E_00367] */

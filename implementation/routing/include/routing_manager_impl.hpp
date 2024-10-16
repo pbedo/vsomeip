@@ -465,7 +465,20 @@ private:
             service_t _service, instance_t _instance,
             const boost::asio::ip::address &_remote_address) const;
 
-private:
+    /**
+     * remove bytes from a buffer starting at a specified index.
+     *
+     * @param buffer Pointer to the byte buffer.
+     * @param bufferSize Size of the byte buffer.
+     * @param startIndex Starting index from where bytes should be erased.
+     * @param length Number of bytes to erase from the buffer.
+     * @return true if the operation succeeds, false otherwise.
+     */
+    bool erase_bytes(byte_t *buffer, size_t bufferSize, size_t startIndex,
+                    size_t length);
+    void reduce_msg_length(byte_t *buffer, length_t& bufferSize,length_t reduceBy);
+
+  private:
     std::shared_ptr<routing_manager_stub> stub_;
     std::shared_ptr<sd::service_discovery> discovery_;
 

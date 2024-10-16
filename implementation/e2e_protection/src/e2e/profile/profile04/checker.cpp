@@ -47,17 +47,32 @@ void profile_04_checker::check(const e2e_buffer &_buffer, instance_t _instance,
                             VSOMEIP_ERROR << std::hex << "E2E P04 protection: CRC32 does not match: calculated CRC: "
                                     << its_crc << " received CRC: " << its_received_crc;
                         } else {
-                            uint32_t its_data_id(uint32_t(_instance) << 24 | config_.data_id_);
+                            uint32_t its_data_id(config_.data_id_);
                             if (its_received_data_id == its_data_id
                                     && static_cast<size_t>(its_received_length) == _buffer.size()
                                     && verify_counter(_instance, its_received_counter)) {
                                 _generic_check_status = e2e::profile_interface::generic_check_status::E2E_OK;
+                            } else {
+                                VSOMEIP_ERROR << "E2E P04 protection: _instance " << _instance;
+                                VSOMEIP_ERROR << "E2E P04 protection: its_data_id " << std::hex << its_data_id << " its_received_data_id " << std::hex << its_received_data_id;
+                                VSOMEIP_ERROR << "E2E P04 protection: _buffer.size() " << _buffer.size() << " its_received_length " << its_received_length;
+                                VSOMEIP_ERROR << "E2E P04 protection: verify_counter(_instance, its_received_counter) " << verify_counter(_instance, its_received_counter);
                             }
                         }
+                    } else {
+                        VSOMEIP_ERROR << "E2E P04 protection: read its_received_crc failed";
                     }
+                } else  {
+                    VSOMEIP_ERROR << "E2E P04 protection: read its_received_data_id failed";
                 }
+            } else {
+                VSOMEIP_ERROR << "E2E P04 protection: read its_received_counter failed";
             }
+        } else {
+            VSOMEIP_ERROR << "E2E P04 protection: read its_received_length failed";
         }
+    } else {
+        VSOMEIP_ERROR << "E2E P04 protection: verify_input failed: " << _buffer.size();
     }
 }
 

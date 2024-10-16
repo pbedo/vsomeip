@@ -2453,7 +2453,8 @@ void routing_manager_client::notify_remote_initially(service_t _service, instanc
     if (its_eventgroup) {
         auto service_info = find_service(_service, _instance);
         for (const auto &e : its_eventgroup->get_events()) {
-            if (e->is_field() && e->is_set()
+            if ((e->is_field() || e->get_type() == event_type_e::ET_EVENT)
+                    && e->is_set()
                     && _events_to_exclude.find(e->get_event())
                             == _events_to_exclude.end()) {
                 std::shared_ptr<message> its_notification
@@ -2833,6 +2834,7 @@ void routing_manager_client::on_update_security_credentials(
     for (const auto &c : _command.get_credentials()) {
         std::shared_ptr<policy> its_policy(std::make_shared<policy>());
         boost::icl::interval_set<uint32_t> its_gid_set;
+        its_gid_set.clear();
         uid_t its_uid(c.first);
         gid_t its_gid(c.second);
 
