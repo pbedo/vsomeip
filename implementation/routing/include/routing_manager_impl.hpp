@@ -465,6 +465,9 @@ private:
             service_t _service, instance_t _instance,
             const boost::asio::ip::address &_remote_address) const;
 
+    bool apply_e2e_protection(const byte_t **_data, length_t &_size,
+            service_t _service, method_t _method,
+            instance_t _instance, e2e_buffer& its_buffer);
     /**
      * remove bytes from a buffer starting at a specified index.
      *
